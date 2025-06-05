@@ -4,18 +4,22 @@ Phần 1: Kết Luận Chính
 "Thứ hai, đa số các trận động đất được ghi nhận có độ lớn tập trung trong khoảng từ 4.5 đến 6.0 độ Richter, và hầu hết xảy ra ở độ sâu tương đối nông, dưới 50km."
 "Đối với phần Mô hình dự đoán, đây là một hướng khám phá ban đầu của nhóm:"
 "Mục tiêu của chúng em là tìm hiểu khả năng ứng dụng học máy để dự đoán các yếu tố quan trọng của động đất như thời điểm xảy ra hoặc độ lớn."
-"Qua việc xem xét các thuật toán cơ bản, chúng em nhận thấy rằng, đặc biệt với bài toán dự đoán thời điểm, cần phải có những phương pháp tiếp cận chuyên biệt hơn, nhất là các kỹ thuật dành cho phân tích chuỗi thời gian."
+"Qua việc xem xét các thuật toán cơ bản, chúng em nhận thấy rằng, đặc biệt với bài toán dự đoán thời điểm, cần phải có những phương pháp tiếp cận chuyên biệt hơn, nhất là các kỹ 
+thuật dành cho phân tích chuỗi thời gian."
 Phần 2: Hướng Phát Triển
 "Từ những kết quả và nhận định đó, nhóm chúng em đề xuất các Hướng Phát Triển chính như sau:"
 "Đầu tiên là Cải thiện và Xây dựng các Mô hình Dự đoán một cách toàn diện hơn. Điều này bao gồm:"
 "Việc bổ sung các features (đặc trưng) địa chất chuyên sâu và các yếu tố có thể báo hiệu sớm như tiền chấn."
-"Quan trọng hơn là thử nghiệm và hoàn thiện các mô hình dự đoán thời điểm bằng cách sử dụng các thuật toán phù hợp như ARIMA, Prophet, hoặc các mô hình học sâu như LSTM, GRU. Song song đó, tiếp tục cải thiện các mô hình dự đoán độ lớn bằng các thuật toán mạnh mẽ như XGBoost, LightGBM hay các kiến trúc Neural Networks khác."
+"Quan trọng hơn là thử nghiệm và hoàn thiện các mô hình dự đoán thời điểm bằng cách sử dụng các thuật toán phù hợp như ARIMA, Prophet, hoặc các mô hình học sâu như LSTM, GRU. Song 
+song đó, tiếp tục cải thiện các mô hình dự đoán độ lớn bằng các thuật toán mạnh mẽ như XGBoost, LightGBM hay các kiến trúc Neural Networks khác."
 "Hướng thứ hai là Mở rộng Phạm vi của Bài toán Dự đoán sang các khía cạnh có tính ứng dụng cao hơn:"
 "Ví dụ như phát triển mô hình có khả năng dự đoán xác suất xảy ra một trận động đất trong một cửa sổ không gian và thời gian cụ thể."
 "Hoặc phân loại mức độ nguy hiểm của động đất dựa trên nhiều yếu tố, không chỉ riêng độ lớn."
 "Và một lĩnh vực quan trọng khác là phân tích và mô hình hóa các chuỗi dư chấn (aftershocks)."
-"Cuối cùng, việc tăng cường tích hợp hiệu quả các yếu tố thời gian và không gian vào tất cả các mô hình sẽ là một yếu tố then chốt để nâng cao độ chính xác và tính thực tiễn của các dự đoán."
+"Cuối cùng, việc tăng cường tích hợp hiệu quả các yếu tố thời gian và không gian vào tất cả các mô hình sẽ là một yếu tố then chốt để nâng cao độ chính xác và tính thực tiễn của 
+các dự đoán."
 Phần 3: Kết Thúc
-"Đó là những tổng kết chính từ nghiên cứu của nhóm chúng em về phân tích và dự đoán động đất toàn cầu giai đoạn 1990-2023. Chúng em hy vọng những phân tích này đã mang lại cái nhìn sâu sắc hơn về dữ liệu động đất cũng như tiềm năng ứng dụng của học máy trong lĩnh vực này."
+"Đó là những tổng kết chính từ nghiên cứu của nhóm chúng em về phân tích và dự đoán động đất toàn cầu giai đoạn 1990-2023. Chúng em hy vọng những phân tích này đã mang lại cái 
+nhìn sâu sắc hơn về dữ liệu động đất cũng như tiềm năng ứng dụng của học máy trong lĩnh vực này."
 "Một lần nữa, em xin chân thành cảm ơn thầy và các bạn đã chú ý lắng nghe."
 "Sau đây, nhóm chúng em xin sẵn sàng cho phần thảo luận và trả lời các câu hỏi từ thầy và các bạn.
