@@ -1,49 +1,21 @@
-A. Tóm tắt kết quả chính (Key Findings & Conclusions):
-
-Từ Phân tích Dữ liệu Khám phá (EDA):
-"Phân tích trực quan hóa trên bản đồ cho thấy các trận động đất trong giai đoạn 1990-2023 phân bố dày đặc dọc theo các vành đai kiến tạo lớn của Trái Đất, đặc biệt là Vành 
-đai lửa Thái Bình Dương và các dãy núi trẻ." (Đây là một phát hiện quan trọng và thường thấy trong phân tích dữ liệu động đất).
-"Đa số các trận động đất được ghi nhận có độ lớn (mag) tập trung trong khoảng từ 4.5 đến 6.0 độ Richter. Các trận động đất có độ lớn rất cao (ví dụ, trên 7.5) ít xảy ra hơn 
-nhưng có tác động nghiêm trọng." (Kiểm tra lại biểu đồ phân phối mag trong Colab của bạn để xác nhận khoảng giá trị này).
-"Phân tích số lượng động đất theo năm cho thấy không có một xu hướng tăng hoặc giảm rõ rệt về tổng số trận động đất được ghi nhận hàng năm trong giai đoạn 1990-2023, tuy 
-nhiên có sự dao động giữa các năm." (Kiểm tra lại biểu đồ số lượng động đất theo năm trong Colab).
-"Hầu hết các trận động đất xảy ra ở độ sâu (depth) tương đối nông, chủ yếu dưới 50km. Các trận động đất ở độ sâu lớn hiếm gặp hơn." (Kiểm tra biểu đồ phân phối depth).
-
-Từ Mô hình hóa & Dự đoán:
-"Nghiên cứu đã thành công trong việc xây dựng và so sánh hiệu suất của ba mô hình học máy (Linear Regression, Decision Tree Regressor, Random Forest Regressor) để dự đoán độ 
-lớn (mag) của động đất dựa trên các đặc trưng đầu vào là vĩ độ (latitude), kinh độ (longitude), và độ sâu (depth)."
-"Mô hình Random Forest Regressor đã chứng minh hiệu suất vượt trội nhất trong số các mô hình được thử nghiệm, với R² score trên tập kiểm tra đạt 0.61 (61%) và Mean Squared 
-Error (MSE) là 0.18. Điều này cho thấy mô hình có khả năng giải thích được khoảng 61% sự biến thiên của độ lớn động đất và có sai số dự đoán trung bình tương đối chấp nhận được." (Lấy số liệu chính xác từ Colab).
-"Phân tích mức độ quan trọng của các đặc trưng (Feature Importance) từ mô hình Random Forest cho thấy vĩ độ (latitude) là yếu tố có ảnh hưởng lớn nhất đến việc dự đoán độ
-lớn, tiếp theo là độ sâu (depth) và kinh độ (longitude). Điều này nhấn mạnh tầm quan trọng của vị trí địa lý và độ sâu trong việc xác định cường độ của một trận động đất."
-
-B. Hạn chế của nghiên cứu (Limitations):
-"Số lượng features sử dụng để xây dựng mô hình dự đoán còn hạn chế (chỉ bao gồm latitude, longitude, depth). Việc thiếu vắng các yếu tố quan trọng khác như thông tin chi tiết
-về các đường đứt gãy địa chất, loại đất đá, lịch sử địa chấn cụ thể của từng khu vực, hoặc các thông số về ứng suất kiến tạo có thể làm giảm độ chính xác và khả năng tổng 
-quát hóa của mô hình."
-"Dữ liệu động đất, mặc dù lớn, vẫn có thể chứa nhiễu, sai sót trong việc ghi nhận, hoặc thiếu thông tin cho một số sự kiện, đặc biệt là các sự kiện cũ hơn hoặc ở những khu 
-vực ít được quan sát. Điều này có thể ảnh hưởng đến chất lượng của cả phân tích khám phá và hiệu suất của mô hình học máy."
-"Mô hình hiện tại tập trung vào việc dự đoán độ lớn (mag) của động đất như một giá trị liên tục, nhưng chưa giải quyết được bài toán dự đoán thời điểm xảy ra hoặc xác suất 
-xảy ra động đất trong một khoảng thời gian nhất định tại một khu vực cụ thể, vốn là những thông tin quan trọng hơn cho việc cảnh báo sớm và giảm thiểu rủi ro."
-"Mô hình Random Forest, dù cho kết quả tốt nhất, vẫn có dấu hiệu của overfitting (R² trên tập huấn luyện là 0.86 cao hơn đáng kể so với R² trên tập kiểm tra là 0.61). Điều 
-này cho thấy mô hình có thể hoạt động tốt trên dữ liệu đã thấy nhưng chưa thực sự tổng quát hóa tốt trên dữ liệu mới.""
-
-C. Hướng phát triển tương lai (Future Work):
-"Nghiên cứu sâu hơn về Feature Engineering: Bổ sung thêm các features có ý nghĩa vật lý và địa chất hơn. Ví dụ: khoảng cách đến đường đứt gãy gần nhất, loại đứt gãy, tốc độ 
-dịch chuyển của các mảng kiến tạo, mật độ các trận động đất trước đó trong khu vực (tiền chấn), hoặc các thông số từ dữ liệu viễn thám (InSAR) để phát hiện biến dạng bề mặt."
-"Thử nghiệm và tinh chỉnh các thuật toán học máy nâng cao hơn. Cụ thể, có thể khám phá các mô hình ensemble mạnh mẽ như Gradient Boosting (XGBoost, LightGBM, CatBoost) vốn 
-thường cho kết quả tốt trong nhiều bài toán dạng bảng. Bên cạnh đó, các mô hình mạng thần kinh (Neural Networks), đặc biệt là mạng thần kinh hồi quy (Recurrent Neural 
-Networks - RNNs) như LSTM, có thể được xem xét nếu muốn khai thác yếu tố chuỗi thời gian và sự phụ thuộc tuần tự giữa các sự kiện động đất."
-"Mở rộng phạm vi bài toán sang các hướng dự đoán phức tạp và có tính ứng dụng cao hơn. Ví dụ:
-Dự đoán xác suất xảy ra động đất (Earthquake Forecasting): Xây dựng mô hình ước tính khả năng xảy ra một trận động đất với độ lớn nhất định trong một cửa sổ thời gian và không gian cụ thể.
-Phân loại mức độ nguy hiểm của động đất: Thay vì chỉ dự đoán độ lớn, có thể phân loại động đất thành các cấp độ nguy hiểm khác nhau dựa trên nhiều yếu tố.
-Phân tích Aftershock (Dư chấn): Mô hình hóa và dự đoán các chuỗi dư chấn sau một trận động đất lớn."
-"Tích hợp các yếu tố thời gian một cách hiệu quả hơn vào mô hình. Sử dụng các kỹ thuật phân tích chuỗi thời gian hoặc các kiến trúc mô hình được thiết kế riêng cho dữ liệu tuần tự để nắm bắt được các quy luật động học của hoạt động địa chấn."
-"Xây dựng một hệ thống trực quan hóa và tương tác động (Interactive Dashboard) cho phép người dùng khám phá dữ liệu, xem các dự đoán và hiểu rõ hơn về các yếu tố rủi ro động đất tại các khu vực khác nhau (nếu có thể phát triển thành một sản phẩm/ứng dụng)."
-
-
-Kết
-
+Phần 1: Kết Luận Chính
+"Về Kết Luận Chính, từ việc Phân tích Dữ liệu Khám phá (EDA), chúng em có một số phát hiện nổi bật:"
+"Thứ nhất, các trận động đất trong giai đoạn 1990-2023 phân bố dày đặc dọc theo các vành đai kiến tạo lớn của Trái Đất, đặc biệt là Vành đai lửa Thái Bình Dương."
+"Thứ hai, đa số các trận động đất được ghi nhận có độ lớn tập trung trong khoảng từ 4.5 đến 6.0 độ Richter, và hầu hết xảy ra ở độ sâu tương đối nông, dưới 50km."
+"Đối với phần Mô hình dự đoán, đây là một hướng khám phá ban đầu của nhóm:"
+"Mục tiêu của chúng em là tìm hiểu khả năng ứng dụng học máy để dự đoán các yếu tố quan trọng của động đất như thời điểm xảy ra hoặc độ lớn."
+"Qua việc xem xét các thuật toán cơ bản, chúng em nhận thấy rằng, đặc biệt với bài toán dự đoán thời điểm, cần phải có những phương pháp tiếp cận chuyên biệt hơn, nhất là các kỹ thuật dành cho phân tích chuỗi thời gian."
+Phần 2: Hướng Phát Triển
+"Từ những kết quả và nhận định đó, nhóm chúng em đề xuất các Hướng Phát Triển chính như sau:"
+"Đầu tiên là Cải thiện và Xây dựng các Mô hình Dự đoán một cách toàn diện hơn. Điều này bao gồm:"
+"Việc bổ sung các features (đặc trưng) địa chất chuyên sâu và các yếu tố có thể báo hiệu sớm như tiền chấn."
+"Quan trọng hơn là thử nghiệm và hoàn thiện các mô hình dự đoán thời điểm bằng cách sử dụng các thuật toán phù hợp như ARIMA, Prophet, hoặc các mô hình học sâu như LSTM, GRU. Song song đó, tiếp tục cải thiện các mô hình dự đoán độ lớn bằng các thuật toán mạnh mẽ như XGBoost, LightGBM hay các kiến trúc Neural Networks khác."
+"Hướng thứ hai là Mở rộng Phạm vi của Bài toán Dự đoán sang các khía cạnh có tính ứng dụng cao hơn:"
+"Ví dụ như phát triển mô hình có khả năng dự đoán xác suất xảy ra một trận động đất trong một cửa sổ không gian và thời gian cụ thể."
+"Hoặc phân loại mức độ nguy hiểm của động đất dựa trên nhiều yếu tố, không chỉ riêng độ lớn."
+"Và một lĩnh vực quan trọng khác là phân tích và mô hình hóa các chuỗi dư chấn (aftershocks)."
+"Cuối cùng, việc tăng cường tích hợp hiệu quả các yếu tố thời gian và không gian vào tất cả các mô hình sẽ là một yếu tố then chốt để nâng cao độ chính xác và tính thực tiễn của các dự đoán."
+Phần 3: Kết Thúc
 "Đó là những tổng kết chính từ nghiên cứu của nhóm chúng em về phân tích và dự đoán động đất toàn cầu giai đoạn 1990-2023. Chúng em hy vọng những phân tích này đã mang lại cái nhìn sâu sắc hơn về dữ liệu động đất cũng như tiềm năng ứng dụng của học máy trong lĩnh vực này."
 "Một lần nữa, em xin chân thành cảm ơn thầy và các bạn đã chú ý lắng nghe."
-"Sau đây, nhóm chúng em xin sẵn sàng cho phần thảo luận và trả lời các câu hỏi từ thầy và các bạn."
+"Sau đây, nhóm chúng em xin sẵn sàng cho phần thảo luận và trả lời các câu hỏi từ thầy và các bạn.
