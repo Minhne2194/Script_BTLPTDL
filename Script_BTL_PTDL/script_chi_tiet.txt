@@ -1,0 +1,161 @@
+Slide 1: Tiêu đề
+Lời nói: "Chào thầy/cô và các bạn. Chúng em là Nhóm 2, và hôm nay chúng em xin trình bày về đề tài Phân tích và Dự đoán Động đất Toàn cầu giai đoạn 1990-2023, thuộc môn Phân tích Dữ liệu. Giảng viên hướng dẫn của chúng em là ThS Nguyễn Văn Sơn."
+(Giới thiệu các thành viên trong nhóm nếu cần)
+Slide 2: Mục Lục
+Lời nói: "Đây là nội dung chính của bài thuyết trình hôm nay. Chúng ta sẽ đi qua 7 phần: từ Giới thiệu, Thu thập dữ liệu, Khám phá ban đầu, Tiền xử lý, Phân tích khám phá và Trực quan hóa, đến Ứng dụng Học máy và cuối cùng là Tổng kết."
+Slide 3: 1. Giới thiệu
+Lời nói: "Đầu tiên, về phần Giới thiệu.
+Đặt vấn đề: Động đất là một thảm họa thiên nhiên gây ra những thiệt hại to lớn về người và của. Việc phân tích dữ liệu lịch sử động đất giúp chúng ta hiểu rõ hơn về đặc điểm, xu hướng và nguy cơ tiềm ẩn, từ đó hỗ trợ công tác dự báo và phòng ngừa hiệu quả hơn.
+Mục tiêu dự án: Trong dự án này, chúng em đặt ra hai mục tiêu chính:
+Phân tích dữ liệu động đất toàn cầu từ 1990-2023 để tìm ra các đặc điểm và xu hướng.
+Xây dựng mô hình học máy để dự đoán khả năng một trận động đất gây ra sóng thần dựa trên các thông số của trận động đất đó.
+Tổng quan dữ liệu: Dữ liệu được lấy từ USGS thông qua Kaggle, bao gồm hơn 3 triệu bản ghi động đất từ 1990 đến 2023, và được lưu trữ dưới định dạng CSV."
+Slide 4: Mục Lục (chuyển tiếp)
+Lời nói: "Tiếp theo, chúng ta sẽ đi vào phần Thu thập Dữ liệu."
+Slides 5-7: 2. Thu thập Dữ liệu
+Lời nói (Slide 5):
+"Về phương pháp thu thập, dữ liệu được tải xuống từ Kaggle. Chúng em sử dụng thư viện pandas trong Python để đọc và xử lý dữ liệu này."
+"Dataset chúng em sử dụng là 'The Ultimate Earthquake Dataset (from 1990-2023)'. Phạm vi thời gian từ 1990-2023, với khoảng 3.4 triệu sự kiện ban đầu và dung lượng khoảng 315MB. Một số trường dữ liệu chính sẽ được phân tích bao gồm thời gian, ngày tháng, độ lớn (magnitudo), và mức độ ảnh hưởng (significance)."
+Lời nói (Slide 6 - Ảnh chụp dataset):
+"Đây là một cái nhìn tổng quan về cấu trúc dữ liệu. Chúng ta có các cột như 'time', 'place', 'status', 'tsunami' (cho biết có gây sóng thần hay không, 0 là không, 1 là có), 'significance', 'data_type', 'magnitudo', thông tin vị trí 'longitude', 'latitude', 'depth' (độ sâu tâm chấn), và 'date'."
+"Các trường này cung cấp thông tin chi tiết về thời gian xảy ra, vị trí địa lý, độ sâu, độ lớn, mức độ ảnh hưởng, tình trạng ghi nhận, và liệu có gây ra sóng thần hay không."
+Lời nói (Slide 7 - Nhận định sơ bộ):
+"Từ việc xem xét ban đầu, dữ liệu gồm 3.4 triệu bản ghi và 12 cột, bao phủ các yếu tố địa lý, thời gian và ảnh hưởng."
+"Các trường 'magnitude', 'depth', 'significance' là dữ liệu số (Numerical). Trong khi 'tsunami', 'status', 'data_type' là dữ liệu phân loại (Categorical)."
+"Một điểm đáng chú ý là sự xuất hiện của giá trị độ sâu âm, điều này cần được kiểm tra và xử lý trong các bước tiếp theo."
+"Về tiềm năng phân tích, chúng em dự kiến sẽ phân bố động đất theo khu vực và thời gian, tìm hiểu mối liên hệ giữa độ lớn và khả năng gây sóng thần, cũng như mối tương quan giữa độ sâu, mức độ ảnh hưởng và hậu quả."
+Slide 8: Mục Lục (chuyển tiếp)
+Lời nói: "Sau khi thu thập, chúng em tiến hành Khám phá dữ liệu ban đầu."
+Slides 9-15: 3. Khám phá Dữ liệu Ban đầu (EDA)
+Lời nói (Slide 9 - Mục tiêu EDA):
+"Mục tiêu của giai đoạn này là kiểm tra cấu trúc và tính đầy đủ của dữ liệu, phát hiện các dữ liệu sai lệch, thiếu hoặc bất thường, đánh giá sơ bộ các biến chính như thời gian, địa điểm, độ lớn, độ sâu, và chuẩn bị cho các bước Tiền xử lý và Phân tích EDA chi tiết hơn."
+Lời nói (Slide 10 - df.info()):
+"Sử dụng df.info(), chúng em kiểm tra thông tin chung về bộ dữ liệu. Kết quả cho thấy có 3,445,751 bản ghi. Các kiểu dữ liệu bao gồm float64, int64 và object. Tổng cộng có 12 cột và không có giá trị thiếu rõ ràng ở cấp độ tổng thể sau một số bước làm sạch cơ bản ban đầu."
+Lời nói (Slide 11 - df.describe() số):
+"Khi dùng df.describe() cho các biến số, chúng em phát hiện một số điểm:
+Giá trị 'magnitudo' có min là -9.99, tức là có giá trị âm. Chúng em sẽ xử lý bằng cách gán các giá trị âm này thành 0, vì độ lớn động đất không thể âm.
+Cột 'depth' cũng có giá trị âm, min là -10.00, với tổng cộng 162,472 bản ghi có độ sâu âm. Điều này có thể do sự khác biệt trong hệ quy chiếu hoặc cách đo đạc, và cũng cần được xem xét xử lý."
+Lời nói (Slide 12 - Phân tích thêm biến số):
+"Cụ thể hơn về Magnitudo: Giá trị âm (-9.99) có thể là do các rung chấn rất nhỏ, dưới ngưỡng cảm nhận của con người hoặc lỗi ghi nhận. Chúng em sẽ gán giá trị âm bằng 0."
+"Về Depth (độ sâu tâm chấn): Giá trị âm (-10.00) với 162,472 bản ghi. Nguyên nhân có thể do sự khác biệt trong hệ quy chiếu độ cao so với mực nước biển. Chúng em sẽ xem xét việc chuẩn hóa hoặc loại bỏ các giá trị này tùy theo tác động của chúng."
+"Về Significance (mức độ ảnh hưởng): Trung vị là 33.00, nhỏ hơn trung bình là 74.01, điều này cho thấy dữ liệu lệch phải (chứ không phải lệch trái như ghi chú ban đầu). Trung bình nhỏ hơn giá trị max rất nhiều cũng cho thấy dữ liệu có phần đuôi dài, tức là có những sự kiện với mức độ ảnh hưởng rất lớn nhưng số lượng ít."
+Lời nói (Slide 13 - df.describe() object):
+"Đối với các biến dạng object (categorical):
+Cột 'place' có 531,130 giá trị unique, cho thấy sự đa dạng lớn về địa điểm. '6 km W of Cobb, California' là nơi xuất hiện nhiều nhất.
+'status' có 6 loại trạng thái, với 'reviewed' là phổ biến nhất.
+'data_type' có 25 loại, 'earthquake' chiếm đa số. Điều này gợi ý cần làm sạch để chỉ tập trung vào các trận động đất thực sự."
+Lời nói (Slide 14 - Phát hiện bất thường & gợi ý làm sạch):
+"Qua khám phá, chúng em phát hiện một số vấn đề:
+Cột 'status' có cách viết không thống nhất (ví dụ: REVIEWED, reviewed, manual, MANUAL). Chúng em sẽ chuẩn hóa bằng cách gom nhóm thành 'reviewed' và 'automatic'.
+Cột 'data_type' có hơn 20 loại sự kiện, bao gồm cả 'quarry blast', 'explosion'. Chúng em sẽ chỉ giữ lại các bản ghi là 'earthquake' và loại bỏ các dạng nhiễu khác.
+Dữ liệu có khoảng 0.49% số dòng bị trùng lặp, sẽ được loại bỏ bằng df.drop_duplicates()."
+"Những bước làm sạch này nhằm đảm bảo dữ liệu đồng nhất, giảm nhiễu và tăng độ chính xác cho phân tích và huấn luyện mô hình sau này."
+Lời nói (Slide 15 - Tổng kết khám phá):
+"Tóm lại, định hướng cho xử lý tiếp theo bao gồm: Chuẩn hóa và loại bỏ các giá trị bất thường đã phát hiện. Giữ lại các trường quan trọng cho phân tích như magnitudo, depth, tsunami, time, location. Và dữ liệu sẽ sẵn sàng cho bước tiền xử lý chi tiết."
+Slide 16: Mục Lục (chuyển tiếp)
+Lời nói: "Bước tiếp theo là một phần rất quan trọng: Tiền xử lý Dữ liệu, bao gồm các bước làm sạch và chuẩn hóa chi tiết."
+Slides 17-29: 4. Tiền xử lý Dữ liệu
+Lời nói (Slide 17 - Tổng quan các bước):
+"Trong phần này, chúng em sẽ thực hiện 4 bước chính: Kiểm tra số lượng giá trị thiếu, Kiểm tra dữ liệu trùng, Trích xuất các đặc trưng cần thiết, và Làm sạch giá trị từng cột."
+"Như đã đề cập, cột 'place' có độ chi tiết quá cao và gây nhiễu. Chúng em quyết định loại bỏ cột này (df.drop(columns=['place'])) vì đã có thông tin 'state' được chuẩn hóa và tọa độ 'latitude', 'longitude' đủ để phân tích không gian."
+Lời nói (Slide 18 - Kiểm tra giá trị thiếu):
+"Sau khi loại bỏ cột 'place' và một số bước làm sạch ban đầu, chúng em sử dụng df.isna().sum(). Kết quả cho thấy không có giá trị null trong các cột dữ liệu quan trọng còn lại. Điều này rất tốt cho các bước phân tích sau."
+Lời nói (Slide 19 - Kiểm tra giá trị trùng):
+"Chúng em tìm thấy 309 hàng dữ liệu bị trùng lặp hoàn toàn. Các hàng này đã được loại bỏ bằng cách sử dụng df.drop_duplicates(keep='first') để giữ lại bản ghi đầu tiên và loại bỏ các bản sao."
+Lời nói (Slide 20 - Trích xuất đặc trưng Date/Time):
+"Cột 'time' và 'date' tuy có định dạng khác nhau nhưng đều phản ánh thời gian xảy ra sự kiện. Cột 'time' là dạng Unix timestamp (mili giây từ 1/1/1970 UTC). Chúng em đã chuyển đổi và xác nhận rằng thông tin thời gian từ cột 'time' và 'date' là tương đồng."
+Lời nói (Slide 21 - Xử lý Date/Time):
+"Từ cột 'date', chúng em đã trích xuất các thông tin hữu ích như 'year', 'month', 'day', và 'quarter'. Sau đó, các cột 'time' và 'date' gốc đã được loại bỏ để tránh trùng lặp thông tin và làm gọn dataset."
+Lời nói (Slides 22-23 - Làm sạch cột 'status'):
+"Cột 'status' ban đầu có nhiều giá trị không đồng nhất như 'reviewed', 'REVIEWED', 'automatic', 'AUTOMATIC', 'manual', 'MANUAL'. Theo USGS, có 3 loại trạng thái chính là Automatic, Reviewed và Deleted. Chúng em đã chuẩn hóa các giá trị này, gom 'REVIEWED', 'manual', 'MANUAL' về 'reviewed', và 'AUTOMATIC' về 'automatic'. Sau chuẩn hóa, chúng ta còn 2 trạng thái chính là 'reviewed' và 'automatic'."
+Lời nói (Slides 24-25 - Làm sạch cột 'data_type'):
+"Cột 'data_type' chứa nhiều loại sự kiện khác nhau, không chỉ động đất. Như biểu đồ tròn cho thấy, 'earthquake' chiếm đến 97.6%, nhưng vẫn còn các loại khác như 'quarry blast', 'explosion'. Để tập trung phân tích động đất, chúng em đã lọc và chỉ giữ lại các bản ghi có 'data_type' là 'earthquake'. Cột 'data_type' sau đó cũng được loại bỏ vì tất cả các dòng còn lại đều là 'earthquake'."
+Lời nói (Slides 26-28 - Làm sạch cột 'state'/'place'):
+"Cột 'state' (ban đầu là 'place' sau khi được xử lý sơ bộ) có rất nhiều tên địa danh khác nhau, nhiều cách đặt tên không thống nhất và chi tiết không cần thiết. Điều này gây khó khăn cho việc phân tích theo khu vực."
+"Chúng em đã sử dụng một hàm để tìm các từ chung xuất hiện nhiều trong tên các địa danh. Dựa vào danh sách này, chúng em xác định các từ khóa chính cho các quốc gia/khu vực (ví dụ: 'Japan region' được chuẩn hóa thành 'Japan')."
+"Kết quả là bộ dữ liệu về khu vực trở nên sạch sẽ hơn, loại bỏ các khoảng trắng thừa và dữ liệu trùng lặp tên gọi, giúp việc nhóm và phân tích theo khu vực chính xác hơn."
+Lời nói (Slide 29 - Kết quả tiền xử lý):
+"Và đây là bộ dữ liệu cuối cùng sau tất cả các bước tiền xử lý. Các cột đã được làm sạch, cột thời gian được phân giải thành các thành phần year, month, day, quarter. Bộ dữ liệu này gồm 3,345,368 dòng và 12 cột, đã sẵn sàng cho các bước khai phá và xây dựng mô hình tiếp theo."
+Slide 30: Mục Lục (chuyển tiếp)
+Lời nói: "Sau khi dữ liệu đã sạch sẽ, chúng ta sẽ đi vào Phân tích khám phá dữ liệu (EDA) và Trực quan hóa."
+Slides 31-56: 5. Phân tích Khám phá Dữ liệu (EDA) & Trực quan hóa
+Lời nói (Slide 31 - Cấu trúc phần EDA):
+"Trong phần EDA, chúng em sẽ tiến hành Phân tích Đơn biến, Phân tích Đa biến, và Phân tích theo Không gian."
+Lời nói (Slide 32 - Phân tích Đơn biến - Overview):
+"Đầu tiên là Phân tích Đơn biến. Chúng em sẽ xem xét phân phối của Độ mạnh (Magnitude), Độ sâu (Depth), Độ ảnh hưởng (Significance), và phân tích các chỉ số này Theo thời gian."
+Lời nói (Slide 33 - Phân phối Độ mạnh - Magnitude):
+"Về phân phối độ mạnh (Magnitude): Đa số các trận động đất có độ lớn tập trung trong khoảng 1.0 - 2.0. Phân phối này lệch phải, nghĩa là số lượng giảm dần khi độ lớn tăng. Các trận động đất mạnh (mag > 5.0) chiếm tỷ lệ rất nhỏ. Các outliers thể hiện các trận động đất cực mạnh."
+Lời nói (Slide 34 - Phân phối Độ sâu - Depth):
+"Về phân phối độ sâu (Depth): Phần lớn động đất xảy ra ở độ sâu nông (dưới 50 km). Rất ít động đất có độ sâu quá 100km. Boxplot cũng cho thấy dữ liệu tập trung ở các giá trị thấp và có sự tồn tại của các outliers ở độ sâu lớn."
+Lời nói (Slide 35 - Phân phối Độ ảnh hưởng - Significance):
+"Tương tự với độ mạnh và độ sâu, độ ảnh hưởng (Significance) của động đất chủ yếu ở mức tương đối thấp. Tuy nhiên, vẫn tồn tại những trận động đất có sự ảnh hưởng mạnh mẽ, cực kỳ kinh khủng, thể hiện qua các outliers."
+Lời nói (Slide 36 - Phân tích Theo Thời gian - Overview):
+"Tiếp theo, chúng ta sẽ xem xét các chỉ số này thay đổi như thế nào theo thời gian."
+Lời nói (Slide 37 - Số lượng động đất theo thời gian):
+"Biểu đồ số lượng động đất theo từng năm cho thấy có một xu hướng tăng dần về số lượng các trận động đất được ghi nhận, đặc biệt sau khoảng năm 2007-2008. Điều này có thể do sự cải thiện của các hệ thống quan trắc."
+"Tuy nhiên, khi xét các trận động đất có sức mạnh trên 6 độ Richter, số lượng lại có xu hướng giảm trong những năm gần đây."
+Lời nói (Slide 38 - Độ lớn trung bình theo thời gian):
+"Độ lớn trung bình của động đất có xu hướng giảm rõ rệt sau năm 2007 và sau đó dao động ngang. Điều này củng cố giả thuyết rằng các hệ thống đo đạc ngày càng nhạy hơn, ghi nhận được nhiều trận động đất nhỏ hơn mà trước đây có thể đã bỏ sót."
+Lời nói (Slide 39 - Độ ảnh hưởng trung bình theo thời gian):
+"Tương tự, độ ảnh hưởng trung bình cũng giảm sau năm 2008. Trước 2008, hệ thống có thể chủ yếu phát hiện các trận động đất mạnh, gây ảnh hưởng rõ ràng. Sau 2008, với việc ghi nhận nhiều trận động đất nhỏ hơn, ít gây ảnh hưởng hơn, độ ảnh hưởng trung bình cũng giảm theo, dù tổng số lượng trận động đất được ghi nhận tăng lên."
+Lời nói (Slide 40 - Phân tích Đa biến - Overview):
+"Chuyển sang Phân tích Đa biến, chúng em sẽ xem xét mối tương quan giữa các biến."
+Lời nói (Slide 41 - Cấu trúc Phân tích Đa biến):
+"Chúng em sẽ trình bày về Biểu đồ tương quan, Tương quan của Độ ảnh hưởng với các dữ liệu khác, và Tương quan của Sóng thần với các dữ liệu khác."
+Lời nói (Slide 42 - Biểu đồ tương quan heatmap):
+"Ma trận tương quan cho thấy:
+Độ ảnh hưởng (significance) có tương quan dương mạnh mẽ với độ mạnh (magnitudo) (0.95).
+Độ sâu tâm chấn (depth) cũng có tương quan dương với mức độ ảnh hưởng (0.36) và độ mạnh (0.36), điều này hơi lạ và cần xem xét kỹ hơn, có thể các trận động đất sâu nhưng rất mạnh vẫn gây ảnh hưởng lớn.
+Cả significance và magnitudo có xu hướng giảm nhẹ so với năm (year), phù hợp với nhận định về việc ghi nhận nhiều hơn các trận động đất nhỏ hơn theo thời gian."
+Lời nói (Slide 43 - Tương quan Độ ảnh hưởng - Overview):
+"Bây giờ, chúng ta sẽ xem xét kỹ hơn về mối tương quan của Độ ảnh hưởng."
+Lời nói (Slide 44 - Tương quan Độ ảnh hưởng và Sức mạnh):
+"Biểu đồ scatter cho thấy mối quan hệ gần như tuyến tính giữa sức ảnh hưởng và sức mạnh của trận động đất: độ rung chấn càng mạnh thì sức ảnh hưởng càng lớn. Đặc biệt, từ mức 5 độ Richter trở đi, mức ảnh hưởng có thể tăng vọt, tạo thành các giá trị ngoại lai."
+Lời nói (Slide 45 - Tương quan Độ ảnh hưởng và Độ sâu):
+"Khi tâm chấn cách mặt đất từ 100m trở vào (độ sâu rất nông), thiệt hại và ảnh hưởng có thể bộc phát mạnh. Tâm chấn càng sâu, mức độ ảnh hưởng có xu hướng giảm do năng lượng bị hấp thụ bởi lớp vỏ Trái Đất. Do đó, độ sâu tâm chấn là một yếu tố cản trở mức độ ảnh hưởng."
+Lời nói (Slide 46 - Tương quan Sức mạnh và Độ sâu):
+"Không có mối quan hệ tuyến tính rõ ràng giữa sức mạnh và độ sâu tâm chấn. Điều này cho thấy động đất mạnh có thể xảy ra ở nhiều độ sâu khác nhau và ngược lại."
+Lời nói (Slide 47 - Tương quan Sóng thần - Overview):
+"Tiếp theo là mối tương quan của Sóng thần."
+Lời nói (Slide 48 - Tương quan Sóng thần và Sức mạnh):
+"Biểu đồ hộp cho thấy những trận động đất gây ra sóng thần (Tsunami = 1) thường có cường độ lớn hơn đáng kể so với những trận không gây sóng thần (No Tsunami = 0), thường là trên 4.0 độ."
+"Tuy nhiên, không phải mọi trận động đất mạnh đều gây sóng thần. Điều này còn phụ thuộc vào các yếu tố khác như độ sâu, vị trí tâm chấn và địa chất khu vực."
+Lời nói (Slide 49 - Tương quan Sóng thần, Độ mạnh và Độ sâu):
+"Biểu đồ scatter này thể hiện rõ hơn: Sóng thần (điểm màu đỏ) thường xảy ra với động đất có rung chấn mạnh (lớn hơn 4). Đối với các tâm chấn sâu trong lòng đất, cần một trận động đất khá mạnh mới có khả năng gây ra sóng thần."
+Lời nói (Slide 50 - Phân tích Theo Không gian - Overview):
+"Cuối cùng trong phần EDA là Phân tích theo Không gian."
+Lời nói (Slide 51 - Cấu trúc Phân tích Theo Không gian):
+"Chúng em sẽ trình bày về Bản đồ thế giới và Mảng kiến tạo, sau đó là Phân tích theo Khu vực."
+Lời nói (Slide 52 - Bản đồ động đất toàn cầu):
+"Bản đồ này trực quan hóa vị trí các trận động đất trên toàn cầu. Rõ ràng, các trận động đất tập trung chủ yếu dọc theo ranh giới của các mảng kiến tạo, đặc biệt là Vành đai lửa Thái Bình Dương."
+Lời nói (Slide 53 - Bản đồ và Mảng kiến tạo):
+"Khi chồng lớp bản đồ các mảng kiến tạo chính lên bản đồ động đất (đặc biệt các trận có magnitude từ 6.0 trở lên), sự trùng khớp này càng rõ ràng hơn. Các khu vực có nhiều động đất mạnh nhất bao gồm ven Nam Mỹ, xung quanh Indonesia, và Nhật Bản."
+Lời nói (Slide 54 - Phân tích Theo Khu vực - Overview):
+"Chúng ta sẽ đi sâu hơn vào phân tích theo từng khu vực cụ thể."
+Lời nói (Slide 55 - Top 15 khu vực nhiều động đất nhất):
+"Biểu đồ này cho thấy Top 15 khu vực có số lượng trận động đất nhiều nhất. California và Alaska đứng đầu, theo sau là Nevada, Hawaii. Dựa trên danh sách này, chúng ta có thể lựa chọn các khu vực để tập trung huấn luyện mô hình dự đoán trong tương lai."
+Lời nói (Slide 56 - Top 10 khu vực chịu ảnh hưởng nặng nề nhất):
+"Tuy nhiên, khi xét về tổng mức độ ảnh hưởng (Significance), Alaska lại là khu vực chịu ảnh hưởng nặng nề nhất, theo sau là California và Indonesia. Mặc dù California có thể có nhiều trận động đất hơn, nhưng Alaska nằm ở vị trí va chạm mạnh của các mảng kiến tạo, dẫn đến các trận động đất có sức tàn phá và ảnh hưởng lớn hơn."
+Slide 57: Mục Lục (chuyển tiếp)
+Lời nói: "Tiếp theo, chúng em sẽ trình bày về việc ứng dụng Học máy để Dự đoán khả năng xảy ra Sóng thần."
+Slide 58: 6. Ứng dụng Học máy: Dự đoán Khả năng Xảy ra Sóng thần
+Lời nói:
+"Trong phần ứng dụng Học máy, mục tiêu của chúng em là dự đoán khả năng một trận động đất có gây ra sóng thần hay không, dựa trên các đặc điểm của trận động đất đó. Chúng em cũng muốn xác định các yếu tố quan trọng nhất ảnh hưởng đến việc hình thành sóng thần, hướng tới việc hỗ trợ cảnh báo sớm."
+"Về dữ liệu sử dụng và features, chúng em dùng bộ dữ liệu đã được làm sạch. Feature mục tiêu là cột 'tsunami', với 0 là không có sóng thần và 1 là có. Các đặc trưng đầu vào chính được sử dụng là 'magnitudo', 'depth', và 'significance'. Dữ liệu đã được chia thành tập huấn luyện và tập kiểm thử."
+"Về phương pháp và thuật toán, đây là một bài toán phân loại nhị phân. Chúng em đã nghiên cứu và áp dụng các mô hình như Logistic Regression, Decision Tree Classifier, Random Forest Classifier, Support Vector Classifier (SVC), và K-Nearest Neighbors (KNN)."
+"Việc đánh giá mô hình được thực hiện dựa trên các chỉ số phổ biến như Accuracy, Precision, Recall, F1-score, và đường cong ROC AUC. (Nếu có kết quả cụ thể, có thể nói thêm: Ví dụ, mô hình Random Forest Classifier đã cho thấy hiệu suất tốt với Accuracy đạt X% và F1-score là Y% trong việc dự đoán sóng thần.)"
+Slide 59: Mục Lục (chuyển tiếp)
+Lời nói: "Cuối cùng, chúng em xin Tổng kết các kết quả chính và đề xuất Hướng phát triển cho đề tài này."
+Slide 60: 7. Tổng kết: Các Kết quả Chính và Hướng Phát triển
+Lời nói:
+"Về Kết luận Chính từ phần EDA:
+Động đất tập trung chủ yếu tại các vành đai kiến tạo lớn, nổi bật là Vành đai lửa Thái Bình Dương.
+Đa số động đất có độ lớn nhỏ, tập trung ở khoảng 1.0-2.0. Tuy nhiên, các trận động đất gây chú ý hoặc có khả năng gây sóng thần thường có độ lớn từ 4.5 trở lên. Hầu hết xảy ra ở độ sâu nông (dưới 50km)."
+"Về Mô hình dự đoán Sóng thần:
+Mục tiêu chính là phân loại và dự đoán khả năng xảy ra sóng thần từ một trận động đất.
+Các mô hình như Random Forest Classifier và Decision Tree Classifier đã cho thấy khả năng dự đoán tốt. Các yếu tố như 'magnitudo' và 'significance' được xác định là có ảnh hưởng lớn đến khả năng gây ra sóng thần."
+"Về Hướng Phát Triển:
+Đối với mô hình dự đoán sóng thần hiện tại, chúng em đề xuất tinh chỉnh tham số cho các mô hình, thử nghiệm các kỹ thuật xử lý mất cân bằng dữ liệu (nếu có), và có thể bổ sung thêm các features liên quan đến vị trí địa lý chi tiết hơn."
+Mở rộng sang các bài toán dự đoán khác trong tương lai: Chúng em thấy tiềm năng trong việc phát triển mô hình dự đoán thời điểm và độ lớn động đất bằng các thuật toán chuỗi thời gian và hồi quy tiên tiến. Ngoài ra, việc phân tích và mô hình hóa các chuỗi dư chấn cũng là một hướng đi thú vị."
+Slide 61: END & Q&A
+Lời nói: "Bài thuyết trình của Nhóm 2 đến đây là kết thúc. Cảm ơn thầy/cô và các bạn đã lắng nghe. Chúng em rất sẵn lòng trả lời các câu hỏi và lắng nghe góp ý từ thầy/cô và các bạn."

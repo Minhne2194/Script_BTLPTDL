@@ -1,0 +1,87 @@
+1. Giới thiệu & Tổng quan Dữ liệu (Slides 3, 5-7)
+Mục tiêu chính:
+Phân tích đặc điểm, xu hướng động đất.
+Xây dựng mô hình ML dự đoán khả năng gây sóng thần.
+Dataset: USGS (qua Kaggle), "The Ultimate Earthquake Dataset (1990-2023)".
+Kích thước: ~3.4 triệu bản ghi ban đầu, ~315MB.
+Các cột quan trọng ban đầu: time, place, status, tsunami (0/1), significance, data_type, magnitudo, longitude, latitude, depth, date.
+Vấn đề sơ bộ: Độ sâu âm, magnitudo âm, nhiều loại data_type, status không đồng nhất, place quá chi tiết.
+2. Khám phá Dữ liệu Ban đầu (EDA - Sơ bộ) (Slides 9-15)
+df.info(): Xác nhận số lượng, kiểu dữ liệu, không có null rõ ràng ở giai đoạn này (sau vài bước làm sạch ngầm).
+df.describe() (số):
+magnitudo min = -9.99 (sẽ gán = 0).
+depth min = -10.00 (162,472 bản ghi âm, do khác hệ quy chiếu).
+significance: Trung vị (33) < Trung bình (74.01) => Lệch phải (đuôi dài về phía giá trị lớn).
+df.describe() (object):
+place: Rất nhiều giá trị unique.
+status: 6 loại, reviewed nhiều nhất.
+data_type: 25 loại, earthquake nhiều nhất.
+Bất thường & Hướng xử lý:
+status: Chuẩn hóa (REVIEWED, manual -> reviewed; AUTOMATIC -> automatic).
+data_type: Chỉ giữ 'earthquake', loại bỏ nhiễu (quarry blast, explosion).
+Dữ liệu trùng: ~0.49% -> drop_duplicates().
+3. Tiền xử lý Dữ liệu (Slides 17-29)
+Thứ tự các bước chính: Kiểm tra thiếu -> Trùng -> Trích xuất đặc trưng (date/time) -> Làm sạch từng cột.
+Loại bỏ place: Vì quá chi tiết, đã có state (sau này được chuẩn hóa từ place), latitude, longitude.
+Giá trị thiếu (.isna().sum()): Sau các bước làm sạch ban đầu và loại bỏ cột, không còn giá trị thiếu.
+Giá trị trùng: 309 hàng bị trùng -> drop_duplicates(keep='first').
+Xử lý time và date:
+time: Unix timestamp (ms).
+Xác nhận time và date đồng nhất.
+Trích xuất year, month, day, quarter từ date.
+Loại bỏ time và date gốc.
+Làm sạch status:
+Chuẩn hóa các biến thể thành 2 loại chính: reviewed và automatic.
+Làm sạch data_type:
+Lọc, chỉ giữ lại các bản ghi có data_type == 'earthquake'.
+Sau đó loại bỏ cột data_type (vì chỉ còn 1 giá trị).
+Làm sạch state (từ place):
+Sử dụng find_common_words để tìm từ khóa.
+Chuẩn hóa tên khu vực (ví dụ: 'Japan region' -> 'Japan').
+Kết quả cuối cùng: ~3.345 triệu dòng, 12 cột, sẵn sàng cho EDA chi tiết và ML.
+4. Phân tích Khám phá Dữ liệu (EDA - Chi tiết) & Trực quan hóa (Slides 31-56)
+Phân tích Đơn biến:
+Magnitude: Phân phối lệch phải, tập trung 1.0-2.0, rất ít > 5.0.
+Depth: Phần lớn < 50km (nông), rất ít > 100km.
+Significance: Tương tự, chủ yếu thấp, lệch phải.
+Theo thời gian (Số lượng): Tổng số động đất ghi nhận tăng (do cải thiện hệ thống đo). Số trận > 6 độ Richter có xu hướng giảm gần đây.
+Theo thời gian (Trung bình Magnitude/Significance): Giảm sau 2007-2008 (do ghi nhận nhiều trận nhỏ hơn).
+Phân tích Đa biến:
+Heatmap tương quan:
+significance vs magnitudo: Tương quan dương mạnh (0.95).
+depth vs significance/magnitudo: Tương quan dương (0.36) - hơi lạ, cần lưu ý.
+significance/magnitudo vs year: Tương quan âm nhẹ.
+significance vs magnitudo (scatter): Gần tuyến tính, magnitudo tăng -> significance tăng. >5 độ Richter, significance có thể tăng vọt.
+significance vs depth (scatter): Tâm chấn nông (<100m) -> significance có thể rất cao. Sâu hơn -> significance có xu hướng giảm.
+magnitudo vs depth (scatter): Không có quan hệ tuyến tính rõ ràng.
+tsunami vs magnitudo (boxplot): Gây sóng thần (1) -> magnitudo thường > 4.0.
+tsunami vs (magnitudo, depth) (scatter): Sóng thần (điểm đỏ) thường khi magnitudo > 4. Tâm chấn sâu cần magnitudo rất lớn mới gây sóng thần.
+Phân tích Theo Không gian:
+Bản đồ toàn cầu: Động đất tập trung ở ranh giới mảng kiến tạo (Vành đai lửa TBD).
+Top khu vực (số lượng): California, Alaska, Nevada.
+Top khu vực (tổng significance): Alaska, California, Indonesia (Alaska chịu ảnh hưởng nặng nhất do va chạm mảng).
+5. Ứng dụng Học máy: Dự đoán Khả năng Xảy ra Sóng thần (Slides 57-58)
+Mục tiêu: Phân loại động đất có gây sóng thần (1) hay không (0).
+Bài toán: Phân loại nhị phân.
+Features đầu vào: Chủ yếu magnitudo, depth, significance.
+Feature mục tiêu: tsunami.
+Chia dữ liệu: Train/Test.
+Các mô hình sử dụng: Logistic Regression, Decision Tree Classifier, Random Forest Classifier, SVC, KNN.
+Đánh giá: Accuracy, Precision, Recall, F1-score, ROC AUC.
+(Nhớ một kết quả nổi bật nếu có, ví dụ: "Random Forest Classifier cho accuracy X%").
+6. Tổng kết và Hướng Phát triển (Slide 60)
+Kết luận EDA chính:
+Vị trí: Vành đai kiến tạo.
+Magnitude: Đa số nhỏ (1-2), gây chú ý/sóng thần > 4.5.
+Độ sâu: Hầu hết nông (<50km).
+Kết luận Mô hình dự đoán Sóng thần:
+Mục tiêu: Phân loại sóng thần.
+Kết quả tốt từ Random Forest, Decision Tree.
+Yếu tố quan trọng: magnitudo, significance.
+Hướng phát triển (Mô hình Sóng thần):
+Tinh chỉnh tham số.
+Xử lý mất cân bằng (nếu có).
+Thêm features địa lý chi tiết.
+Hướng phát triển (Mở rộng - Future Work):
+Dự đoán thời điểm & độ lớn (ARIMA, Prophet, LSTM, XGBoost...).
+Phân tích dư chấn.
